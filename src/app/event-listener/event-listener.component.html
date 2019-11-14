@@ -1,0 +1,20 @@
+<div id="status">
+  <div id="indicator" class="{{connectionStatus$|async}}"></div>
+  <span id="status-label">{{connectionStatus$|async}}</span>
+  <button mat-raised-button id="unsub" color=warn class="button-medium" (click)=unsubscribe()>Unsubscribe</button>
+</div>
+
+<mat-form-field appearance="outline" color=accent>
+  <mat-label>Triage Notes</mat-label>
+  <textarea matInput placeholder="Triage Notes" [value]=triageNotes rows="4"
+    (input)="onTriageNoteChange($event.target.value)"></textarea>
+</mat-form-field>
+
+<div class="stomp">
+  <div class="header">
+    <h2>Message Queue</h2>
+    <div class="console">
+      <li *ngFor="let msg of stompMessages"> {{msg.ChangedEntity}} {{msg.ActionType}}
+      </li>
+    </div>
+  </div>

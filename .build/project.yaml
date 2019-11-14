@@ -1,0 +1,50 @@
+build:
+  image: "amazonmq-poc-ui"
+  versionPrefix: "1.0"
+#  apiVersion: "1.0"
+  dockerArguments: ""
+  dockerPath: "."
+  
+unitTest:
+  seleniumUrl: "http://localhost"
+  seleniumTag: ""
+  
+helm:
+  chart:
+    appVersion: "1.0"
+    description: A Helm chart for Kubernetes
+    name: amazonmq-poc-ui
+
+  values:
+    image:
+      repository: hub.pvops.com/dev/amazonmq-poc-ui
+
+    env:
+      PathBase: "/amazonmq-pocui"
+      TimeOutMinutes: "1440"
+      EncryptionPublicKeyFileName: "EncryptionPublicKey"
+      EncryptionPublicKeyFilePath: "/var/secret"
+      SigningPublicKeyFileName: "SigningPublicKey"
+      SigningPublicKeyFilePath: "/var/secret"
+
+    envSecrets:
+      DbUserId: "amazonmq-poc-ui-credentials"
+      DbPassword: "amazonmq-poc-ui-credentials"
+      Secret: "amazonmq-poc-ui-credentials"
+      EncryptionPublicKey: "amazonmq-poc-ui-credentials"
+      SigningPublicKey: "amazonmq-poc-ui-credentials"
+
+    envConfigurations:
+      AppAuthApiBaseAddress: "amazonmq-poc-ui-credentials"
+      amazonmq-pocuiBaseAddress: "amazonmq-poc-ui-credentials"
+
+    mountSecret:
+      - amazonmq-poc-ui-credentials
+
+    ingress:
+      enabled: true
+      annotations:
+        nginx.ingress.kubernetes.io/session-cookie-name: "amazonmq-pocui"
+        nginx.ingress.kubernetes.io/add-base-url: "true"
+
+      path: /amazonmq-pocui
